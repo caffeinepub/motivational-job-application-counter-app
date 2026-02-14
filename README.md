@@ -1,2 +1,3 @@
-# motivational-job-application-counter-app
-Exported from Caffeine project: Motivational job application counter app
+## Motivational job application counter app
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

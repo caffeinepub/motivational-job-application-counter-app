@@ -1,0 +1,12 @@
+{
+  "frontend/src/index.css": "Global styles with warm neutral and green accent OKLCH color system for light and dark modes, avoiding blue/purple dominance.",
+  "frontend/tailwind.config.js": "Tailwind configuration with Inter font family, warm color palette, custom shadows, and fade-in/scale-in animations.",
+  "frontend/src/App.tsx": "Main application component handling authentication flow, user profile setup dialog, and rendering the home screen within the app layout.",
+  "frontend/src/components/AppLayout.tsx": "Consistent layout wrapper with header (logo, user name, login button), main content area, and footer with caffeine.ai attribution.",
+  "frontend/src/components/LoginButton.tsx": "Authentication button component that handles login/logout with Internet Identity and clears query cache on logout.",
+  "frontend/src/components/ApplicationEntryForm.tsx": "Form component for logging new job applications with company, role, and optional notes fields.",
+  "frontend/src/components/RecentEntriesList.tsx": "Displays a sorted (newest-first) list of recent application entries with company, role, notes, and timestamp information.",
+  "frontend/src/pages/HomeScreen.tsx": "Home page displaying hero image, total count, motivational message, next milestone, entry form, and recent entries list.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for fetching user profile, saving profile, fetching application entries, and logging new entries with cache invalidation.",
+  "frontend/src/utils/motivation.ts": "Pure utility functions that return encouraging messages and next milestone targets based on application count ranges."
+}

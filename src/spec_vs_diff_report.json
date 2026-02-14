@@ -1,0 +1,94 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-14T09:41:21.069Z",
+  "summary": "Core job-application logging UI and motivational elements were added, but key requested behaviors are missing: a simple one-tap increment action (REQ-1), deletion of entries and corresponding count updates (REQ-2/REQ-3), and the required generated image asset file under the specified public path (REQ-6). Backend persistence is keyed by caller principal but lacks delete/stats methods and uses in-memory Maps only. Several unrequested features were added (user profile setup, access-control initialization, caffeine.ai footer attribution).",
+  "missing_requirements": [
+    {
+      "id": "REQ-1",
+      "requirement": "Provide a primary action that increments the total applications counter by exactly 1 with immediate visual feedback.",
+      "reason": "The UI derives the total from entries length and provides a form to log an entry, but there is no single primary button like “I applied today” that increments by 1 without requiring extra fields; the form requires company and role, so it is not a simple increment action as specified.",
+      "evidence": [
+        "frontend/src/pages/HomeScreen.tsx",
+        "frontend/src/components/ApplicationEntryForm.tsx"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "requirement": "Allow deleting an application entry and update the total counter accordingly.",
+      "reason": "There is no delete UI in the recent entries list and no backend delete method exposed; therefore the total cannot update after deletion.",
+      "evidence": [
+        "frontend/src/components/RecentEntriesList.tsx",
+        "backend/main.mo",
+        "frontend/src/hooks/useQueries.ts"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "requirement": "Backend exposes query/update methods needed to fetch stats+entries, add entry, and delete entry (and/or recompute stats), with persistence keyed by the signed-in principal across sessions.",
+      "reason": "The backend provides methods to add and fetch entries for the caller, but does not provide any delete-entry method or a stats method; frontend also lacks corresponding hooks/mutations. Persistence is in-memory Maps; the diff does not show stable storage for retention beyond canister lifecycle events.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/hooks/useQueries.ts"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "requirement": "Add the generated image asset under frontend/public/assets/generated and render it on the home screen without fetching from the backend.",
+      "reason": "Home screen references the expected path, but the diff summary does not show the actual image file being added under frontend/public/assets/generated.",
+      "evidence": [
+        "frontend/src/pages/HomeScreen.tsx"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "User profile creation/storage flow (name prompt dialog) and related backend profile APIs.",
+      "reason": "The BuildRequest focuses on application counting/log entries and motivation UI; it does not request user profile capture or profile persistence APIs.",
+      "evidence": [
+        "frontend/src/App.tsx",
+        "backend/main.mo",
+        "frontend/src/hooks/useQueries.ts"
+      ]
+    },
+    {
+      "description": "Authorization/access-control initialization via secret admin token and permission checks.",
+      "reason": "The BuildRequest does not specify an admin-token based access-control system or role permissions; only principal-keyed data persistence is required.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/hooks/useActor.ts",
+        "frontend/src/utils/urlParams.ts"
+      ]
+    },
+    {
+      "description": "Caffeine.ai attribution footer with tracking parameters.",
+      "reason": "Not requested as part of the app requirements and adds external-link attribution/tracking logic.",
+      "evidence": [
+        "frontend/src/components/AppLayout.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.78,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/AppLayout.tsx",
+    "frontend/src/components/ApplicationEntryForm.tsx",
+    "frontend/src/components/LoginButton.tsx",
+    "frontend/src/components/RecentEntriesList.tsx",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/index.css",
+    "frontend/src/main.tsx",
+    "frontend/src/pages/HomeScreen.tsx",
+    "frontend/src/utils/motivation.ts",
+    "frontend/src/utils/urlParams.ts",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-create-a-simple-home-screen-that-shows-the-user-s-total-number-of-job-applications-and-provides-a-primary-action-to-increment-the-count-by-1-each-time-the-user-applies",
+      "featureTitle": "Create a simple home screen that shows the user’s total number of job applications and provides a primary action to increment the count by 1 each time the user applies.",
+      "files": [
+        "frontend/src/App.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-allow-the-user-to-log-a-lightweight-entry-for-each-application-at-minimum-date-time-optional-fields-company-role-notes-and-view-recent-entries-in-a-list",
+      "featureTitle": "Allow the user to log a lightweight entry for each application (at minimum: date/time; optional fields: company, role, notes) and view recent entries in a list.",
+      "files": [
+        "frontend/src/components/ApplicationEntryForm.tsx",
+        "frontend/src/components/RecentEntriesList.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-lightweight-motivation-ui-elements-show-a-short-encouraging-message-that-changes-based-on-the-current-count-e-g-0-1-4-5-9-10-and-a-simple-milestone-indicator-e-g-next-milestone-10",
+      "featureTitle": "Add lightweight motivation UI elements: show a short encouraging message that changes based on the current count (e.g., 0, 1–4, 5–9, 10+), and a simple milestone indicator (e.g., “Next milestone: 10”).",
+      "files": [
+        "frontend/src/utils/motivation.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-coherent-visual-theme-for-the-app-colors-typography-spacing-and-component-styling-with-a-calm-supportive-look-and-consistent-layout-across-screens-do-not-use-a-blue-purple-dominant-palette",
+      "featureTitle": "Implement a coherent visual theme for the app (colors, typography, spacing, and component styling) with a calm, supportive look and consistent layout across screens. Do not use a blue/purple-dominant palette.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/AppLayout.tsx",
+        "frontend/src/index.css"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-the-required-generated-image-asset-s-to-the-frontend-as-static-files-and-display-the-main-illustration-on-the-home-screen-e-g-header-hero-area",
+      "featureTitle": "Add the required generated image asset(s) to the frontend as static files and display the main illustration on the home screen (e.g., header/hero area).",
+      "files": [],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

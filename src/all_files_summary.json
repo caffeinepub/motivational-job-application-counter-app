@@ -1,0 +1,22 @@
+{
+  "backend/main.mo": "Motoko canister storing user profiles and application log entries with access control and query/update methods for retrieving and saving data.",
+  "feature_evidence.json": "Feature-to-file mapping report listing implemented features, related source files, components, tests, and confidence levels.",
+  "frontend-file-summaries.txt": "Prewritten summaries describing the purpose of key frontend files including layouts, hooks, pages, and utilities.",
+  "frontend/index.css": "Tailwind base styles and OKLCH color variables defining the app’s light/dark theme and global styling.",
+  "frontend/index.html": "HTML entry point containing the root mount element and loading the React app via main.tsx.",
+  "frontend/src/App.tsx": "Top-level React component handling authentication, profile setup, and rendering the main home screen within the app layout.",
+  "frontend/src/components/AppLayout.tsx": "Layout component providing a consistent header, footer, and content area with user info and login controls.",
+  "frontend/src/components/ApplicationEntryForm.tsx": "Form for creating new job application log entries with required company and role fields and optional notes.",
+  "frontend/src/components/LoginButton.tsx": "Authentication button managing login/logout via Internet Identity with loading states and query cache clearing.",
+  "frontend/src/components/RecentEntriesList.tsx": "Displays recent application entries with loading, empty, and sorted list states.",
+  "frontend/src/hooks/useActor.ts": "Creates and manages the authenticated or anonymous backend actor and invalidates dependent queries on change.",
+  "frontend/src/hooks/useInternetIdentity.ts": "Provides Internet Identity auth context, handling login, stored identities, and auth client setup.",
+  "frontend/src/hooks/useQueries.ts": "Defines React Query hooks for fetching and mutating user profiles and application log entries via the actor.",
+  "frontend/src/index.css": "Configures Tailwind and defines light/dark theme CSS variables and global styles.",
+  "frontend/src/main.tsx": "Bootstraps the React app with QueryClient and InternetIdentityProvider.",
+  "frontend/src/pages/HomeScreen.tsx": "Renders the home dashboard with stats, motivational cards, entry form, and recent entries list.",
+  "frontend/src/utils/motivation.ts": "Provides functions that return motivational messages and milestone targets based on application count.",
+  "frontend/src/utils/urlParams.ts": "Utilities for reading, storing, and clearing URL and session-based parameters.",
+  "frontend/tailwind.config.js": "Configures Tailwind with custom colors, typography, animations, container settings, and plugins for typography, container queries, and animations.",
+  "project_state.json": "Defines the project's state, including features, requirements, image needs, and pending requests for a motivational job-application tracker app."
+}

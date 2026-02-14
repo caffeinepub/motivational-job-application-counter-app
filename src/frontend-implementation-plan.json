@@ -1,0 +1,138 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Motivational job application counter app (frontend)",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Home screen shows total applications and a single primary action that increments by 1 with immediate UI feedback.",
+      "acceptanceCriteria": [
+        "Home screen displays a clearly labeled total applications counter.",
+        "A single primary button (e.g., “I applied today” / “Log application”) increments the counter by exactly 1.",
+        "Increment action provides immediate visual feedback (counter updates without page reload)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/screens/HomeScreen.tsx",
+          "operation": "create",
+          "description": "Implement the home screen UI that displays the total count (derived from stored entries) and a single primary action to log an application; update the UI immediately using React Query optimistic updates while persisting via the backend capability."
+        },
+        {
+          "path": "frontend/src/hooks/useApplicationEntries.ts",
+          "operation": "create",
+          "description": "Create React Query hooks to fetch recent application entries and to log a new entry; expose derived count and mutation state for immediate visual feedback on increment."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Wire the HomeScreen into the app shell and ensure it is the primary view users land on after authentication."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Provide a lightweight per-application logging flow (timestamp + optional company/role/notes), show newest-first recent entries, and allow deleting an entry with total updating.",
+      "acceptanceCriteria": [
+        "User can add an application log entry when incrementing or via an “Add entry” flow.",
+        "Recent entries list shows newest-first and includes at least the timestamp.",
+        "Total counter equals the number of stored entries (or is kept consistent if stored separately).",
+        "User can delete an entry and the total updates accordingly."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/ApplicationEntryForm.tsx",
+          "operation": "create",
+          "description": "Create a compact entry form (company, role, notes optional) that can be used inline on the HomeScreen or in an “Add entry” section; use shadcn-ui form primitives (e.g., Input/Textarea/Button/Card) to keep styling consistent. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/RecentEntriesList.tsx",
+          "operation": "create",
+          "description": "Render a newest-first list of recent entries showing at least the timestamp plus any provided fields; include a per-row delete control that calls the delete mutation and updates the list/count. Use shadcn-ui components for list rows/actions (e.g., Card/Button/AlertDialog). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useApplicationEntries.ts",
+          "operation": "modify",
+          "description": "Add mutations and cache update logic for: (1) log entry with current timestamp and optional fields; (2) delete entry with optimistic removal and count recalculation from the cached list; ensure list sorting is newest-first."
+        },
+        {
+          "path": "frontend/src/backend.d.ts",
+          "operation": "modify",
+          "description": "Align frontend type surface with the backend capabilities used by the UI for entries (fetch, add, and delete). If a delete capability exists in the backend canister but is missing from typings, add the missing method signature so the UI can call it safely."
+        },
+        {
+          "path": "frontend/src/screens/HomeScreen.tsx",
+          "operation": "modify",
+          "description": "Integrate ApplicationEntryForm and RecentEntriesList into the home screen; ensure the primary increment action can either (a) log immediately with minimal fields or (b) open/expand the lightweight entry form flow."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Add motivational UI: encouraging message based on count ranges and a next-milestone indicator.",
+      "acceptanceCriteria": [
+        "Encouraging message text changes when crossing defined count ranges.",
+        "UI shows the next milestone target number based on the current count.",
+        "All user-facing text is in English."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/utils/motivation.ts",
+          "operation": "create",
+          "description": "Implement pure helper functions to map application count to: (1) encouraging English message for ranges (0, 1–4, 5–9, 10+), and (2) next milestone target number (e.g., next multiple of 10 or a small set of milestones)."
+        },
+        {
+          "path": "frontend/src/screens/HomeScreen.tsx",
+          "operation": "modify",
+          "description": "Display the dynamic encouraging message and the next milestone indicator alongside the counter, updating automatically as the derived count changes."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Apply a calm, supportive, consistent visual theme across the home and entries UI, avoiding a blue/purple-dominant palette.",
+      "acceptanceCriteria": [
+        "App uses a consistent, calm visual style across the home counter view and entries list.",
+        "Primary action is visually prominent and accessible (clear contrast, readable type).",
+        "Theme avoids a blue/purple-dominant palette."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Define global Tailwind layers and set CSS variables used by the Tailwind theme to a calm, supportive palette (e.g., warm neutrals with green/orange accents) that is not blue/purple-dominant; establish consistent typography and spacing defaults."
+        },
+        {
+          "path": "frontend/src/components/AppLayout.tsx",
+          "operation": "create",
+          "description": "Create a consistent layout wrapper (max width, padding, header area) used across screens/sections; ensure primary action styling is prominent and accessible using shadcn-ui Button variants where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wrap authenticated application content with AppLayout to ensure consistent spacing and styling across the home counter view and entries list."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Add and display the generated hero illustration on the home screen as a responsive static asset.",
+      "acceptanceCriteria": [
+        "Generated image files are placed under frontend/public/assets/generated.",
+        "Home screen renders the illustration without fetching it from the backend.",
+        "Image scales responsively and does not break layout on small screens."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/job-hunt-hero.dim_1600x900.png",
+          "operation": "create",
+          "description": "Add the generated static image asset at the exact required path: frontend/public/assets/generated/job-hunt-hero.dim_1600x900.png."
+        },
+        {
+          "path": "frontend/src/screens/HomeScreen.tsx",
+          "operation": "modify",
+          "description": "Render the hero illustration from frontend/public/assets/generated/job-hunt-hero.dim_1600x900.png in a header/hero area with responsive sizing and safe aspect handling so it does not break layout on small screens."
+        }
+      ]
+    }
+  ]
+}

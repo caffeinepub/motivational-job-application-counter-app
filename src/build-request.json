@@ -1,0 +1,142 @@
+{
+  "kind": "build_request",
+  "title": "Motivational job application counter app",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Create a simple home screen that shows the user’s total number of job applications and provides a primary action to increment the count by 1 each time the user applies.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "I want an app to track and increase the counter for each time i apply to keep me motivated."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Home screen displays a clearly labeled total applications counter.",
+        "A single primary button (e.g., “I applied today” / “Log application”) increments the counter by exactly 1.",
+        "Increment action provides immediate visual feedback (counter updates without page reload)."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Allow the user to log a lightweight entry for each application (at minimum: date/time; optional fields: company, role, notes) and view recent entries in a list.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "I want an app to track and increase the counter for each time i apply"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can add an application log entry when incrementing or via an “Add entry” flow.",
+        "Recent entries list shows newest-first and includes at least the timestamp.",
+        "Total counter equals the number of stored entries (or is kept consistent if stored separately).",
+        "User can delete an entry and the total updates accordingly."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Persist the user’s counter and application log entries in the Motoko backend keyed by the signed-in Internet Identity principal so progress is retained across sessions.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "I want an app to track and increase the counter for each time i apply to keep me motivated."
+        ]
+      },
+      "acceptanceCriteria": [
+        "After refresh/reopen, previously saved counter and entries load correctly for the same signed-in user.",
+        "Different principals see different stored data.",
+        "Backend exposes query/update methods needed to: fetch stats + entries, add entry, delete entry (and/or recompute stats)."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Add lightweight motivation UI elements: show a short encouraging message that changes based on the current count (e.g., 0, 1–4, 5–9, 10+), and a simple milestone indicator (e.g., “Next milestone: 10”).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "to keep me motivated"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Encouraging message text changes when crossing defined count ranges.",
+        "UI shows the next milestone target number based on the current count.",
+        "All user-facing text is in English."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Implement a coherent visual theme for the app (colors, typography, spacing, and component styling) with a calm, supportive look and consistent layout across screens. Do not use a blue/purple-dominant palette.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "i get depressed easily after a few days of trying."
+        ]
+      },
+      "acceptanceCriteria": [
+        "App uses a consistent, calm visual style across the home counter view and entries list.",
+        "Primary action is visually prominent and accessible (clear contrast, readable type).",
+        "Theme avoids a blue/purple-dominant palette."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Add the required generated image asset(s) to the frontend as static files and display the main illustration on the home screen (e.g., header/hero area).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "I want an app to track and increase the counter ... to keep me motivated."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Generated image files are placed under frontend/public/assets/generated.",
+        "Home screen renders the illustration without fetching it from the backend.",
+        "Image scales responsively and does not break layout on small screens."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor (all logic in backend/main.mo).",
+    "Do not edit files in frontend immutablePaths (compose existing UI components instead).",
+    "Use English for any user-facing text."
+  ],
+  "nonGoals": [
+    "No integrations with external job boards (LinkedIn/Indeed) or scraping.",
+    "No push notifications, email reminders, or SMS.",
+    "No real-time chat or social features."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Warm minimal illustration of a person at a desk with a checklist and subtle hopeful elements (job-hunt-hero.dim_1600x900.png)"
+    ],
+    "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
+  }
+}
