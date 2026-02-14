@@ -2,70 +2,12 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-create-a-simple-home-screen-that-shows-the-user-s-total-number-of-job-applications-and-provides-a-primary-action-to-increment-the-count-by-1-each-time-the-user-applies",
-      "featureTitle": "Create a simple home screen that shows the user’s total number of job applications and provides a primary action to increment the count by 1 each time the user applies.",
+      "featureId": "feature-add-a-reminder-settings-ui-that-lets-an-authenticated-user-enable-disable-reminders-and-configure-a-simple-schedule-at-minimum-frequency-daily-time-of-day-the-ui-must-be-accessible-from-the-main-authenticated-experience-e-g-home-screen-or-app-header-and-use-english-user-facing-text",
+      "featureTitle": "Add a Reminder Settings UI that lets an authenticated user enable/disable reminders and configure a simple schedule (at minimum: frequency = daily, time of day). The UI must be accessible from the main authenticated experience (e.g., Home screen or App header) and use English user-facing text.",
       "files": [
-        "frontend/src/App.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-1"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-allow-the-user-to-log-a-lightweight-entry-for-each-application-at-minimum-date-time-optional-fields-company-role-notes-and-view-recent-entries-in-a-list",
-      "featureTitle": "Allow the user to log a lightweight entry for each application (at minimum: date/time; optional fields: company, role, notes) and view recent entries in a list.",
-      "files": [
-        "frontend/src/components/ApplicationEntryForm.tsx",
-        "frontend/src/components/RecentEntriesList.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-2"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-lightweight-motivation-ui-elements-show-a-short-encouraging-message-that-changes-based-on-the-current-count-e-g-0-1-4-5-9-10-and-a-simple-milestone-indicator-e-g-next-milestone-10",
-      "featureTitle": "Add lightweight motivation UI elements: show a short encouraging message that changes based on the current count (e.g., 0, 1–4, 5–9, 10+), and a simple milestone indicator (e.g., “Next milestone: 10”).",
-      "files": [
-        "frontend/src/utils/motivation.ts"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-4"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-implement-a-coherent-visual-theme-for-the-app-colors-typography-spacing-and-component-styling-with-a-calm-supportive-look-and-consistent-layout-across-screens-do-not-use-a-blue-purple-dominant-palette",
-      "featureTitle": "Implement a coherent visual theme for the app (colors, typography, spacing, and component styling) with a calm, supportive look and consistent layout across screens. Do not use a blue/purple-dominant palette.",
-      "files": [
-        "frontend/src/App.tsx",
         "frontend/src/components/AppLayout.tsx",
-        "frontend/src/index.css"
+        "frontend/src/components/ReminderSettingsDialog.tsx",
+        "frontend/src/hooks/useQueries.ts"
       ],
       "components": [
         "authorization@4.0.0",
@@ -76,14 +18,19 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-5"
+        "REQ-7"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-add-the-required-generated-image-asset-s-to-the-frontend-as-static-files-and-display-the-main-illustration-on-the-home-screen-e-g-header-hero-area",
-      "featureTitle": "Add the required generated image asset(s) to the frontend as static files and display the main illustration on the home screen (e.g., header/hero area).",
-      "files": [],
+      "featureId": "feature-implement-reminder-delivery-in-the-frontend-as-an-in-app-reminder-system-with-optional-browser-notification-api-support-when-permissions-are-granted-the-app-must-gracefully-fall-back-to-an-in-app-banner-dialog-when-notifications-are-not-supported-or-permission-is-denied-and-must-not-rely-on-push-notifications",
+      "featureTitle": "Implement reminder delivery in the frontend as an in-app reminder system with optional browser Notification API support when permissions are granted. The app must gracefully fall back to an in-app banner/dialog when notifications are not supported or permission is denied, and must not rely on push notifications.",
+      "files": [
+        "frontend/src/components/AppLayout.tsx",
+        "frontend/src/components/InAppReminderBanner.tsx",
+        "frontend/src/components/ReminderSettingsDialog.tsx",
+        "frontend/src/hooks/useReminderScheduler.ts"
+      ],
       "components": [
         "authorization@4.0.0",
         "core-infrastructure@1.0.2",
@@ -93,7 +40,48 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-6"
+        "REQ-9"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-motivational-keep-the-fire-on-animation-to-the-home-screen-that-visually-conveys-ongoing-momentum-e-g-a-flame-flicker-badge-near-the-main-count-the-animation-must-be-smooth-lightweight-and-consistent-with-the-existing-warm-theme-no-blue-purple-dominant-styling",
+      "featureTitle": "Add a motivational “keep the fire on” animation to the Home screen that visually conveys ongoing momentum (e.g., a flame/flicker badge near the main count). The animation must be smooth, lightweight, and consistent with the existing warm theme (no blue/purple-dominant styling).",
+      "files": [
+        "frontend/src/components/FlameMomentumBadge.tsx",
+        "frontend/src/pages/HomeScreen.tsx",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-10"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-trigger-a-short-celebratory-animation-state-when-a-new-application-entry-is-successfully-logged-e-g-brief-intensification-of-the-flame-flicker-or-a-subtle-burst-using-the-existing-applicationentryform-onsuccess-hook-to-coordinate-ui-feedback",
+      "featureTitle": "Trigger a short celebratory animation state when a new application entry is successfully logged (e.g., brief intensification of the flame/flicker or a subtle burst), using the existing ApplicationEntryForm onSuccess hook to coordinate UI feedback.",
+      "files": [
+        "frontend/src/components/FlameMomentumBadge.tsx",
+        "frontend/src/pages/HomeScreen.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-11"
       ],
       "confidence": "high"
     }

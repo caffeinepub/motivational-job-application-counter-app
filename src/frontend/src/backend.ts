@@ -90,6 +90,9 @@ export class ExternalBlob {
     }
 }
 export type Time = bigint;
+export interface ReminderSettings {
+    dailyReminderTime?: string;
+}
 export interface ApplicationLogEntry {
     role: string;
     company: string;
@@ -107,15 +110,19 @@ export enum UserRole {
 export interface backendInterface {
     _initializeAccessControlWithSecret(userSecret: string): Promise<void>;
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
+    getCallerReminderSettings(): Promise<ReminderSettings | null>;
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
     getRecentApplicationEntries(): Promise<Array<ApplicationLogEntry>>;
+    getReminderSettings(user: Principal): Promise<ReminderSettings | null>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
     isCallerAdmin(): Promise<boolean>;
     logApplicationEntry(company: string, role: string, notes: string | null): Promise<void>;
+    saveCallerReminderSettings(settings: ReminderSettings): Promise<void>;
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
+    updateReminderSettings(user: Principal, settings: ReminderSettings): Promise<void>;
 }
-import type { ApplicationLogEntry as _ApplicationLogEntry, Time as _Time, UserProfile as _UserProfile, UserRole as _UserRole } from "./declarations/backend.did.d.ts";
+import type { ApplicationLogEntry as _ApplicationLogEntry, ReminderSettings as _ReminderSettings, Time as _Time, UserProfile as _UserProfile, UserRole as _UserRole } from "./declarations/backend.did.d.ts";
 export class Backend implements backendInterface {
     constructor(private actor: ActorSubclass<_SERVICE>, private _uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, private _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, private processError?: (error: unknown) => never){}
     async _initializeAccessControlWithSecret(arg0: string): Promise<void> {
@@ -146,60 +153,88 @@ export class Backend implements backendInterface {
             return result;
         }
     }
+    async getCallerReminderSettings(): Promise<ReminderSettings | null> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getCallerReminderSettings();
+                return from_candid_opt_n3(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getCallerReminderSettings();
+            return from_candid_opt_n3(this._uploadFile, this._downloadFile, result);
+        }
+    }
     async getCallerUserProfile(): Promise<UserProfile | null> {
         if (this.processError) {
             try {
                 const result = await this.actor.getCallerUserProfile();
-                return from_candid_opt_n3(this._uploadFile, this._downloadFile, result);
+                return from_candid_opt_n7(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getCallerUserProfile();
-            return from_candid_opt_n3(this._uploadFile, this._downloadFile, result);
+            return from_candid_opt_n7(this._uploadFile, this._downloadFile, result);
         }
     }
     async getCallerUserRole(): Promise<UserRole> {
         if (this.processError) {
             try {
                 const result = await this.actor.getCallerUserRole();
-                return from_candid_UserRole_n4(this._uploadFile, this._downloadFile, result);
+                return from_candid_UserRole_n8(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getCallerUserRole();
-            return from_candid_UserRole_n4(this._uploadFile, this._downloadFile, result);
+            return from_candid_UserRole_n8(this._uploadFile, this._downloadFile, result);
         }
     }
     async getRecentApplicationEntries(): Promise<Array<ApplicationLogEntry>> {
         if (this.processError) {
             try {
                 const result = await this.actor.getRecentApplicationEntries();
-                return from_candid_vec_n6(this._uploadFile, this._downloadFile, result);
+                return from_candid_vec_n10(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getRecentApplicationEntries();
-            return from_candid_vec_n6(this._uploadFile, this._downloadFile, result);
+            return from_candid_vec_n10(this._uploadFile, this._downloadFile, result);
         }
     }
-    async getUserProfile(arg0: Principal): Promise<UserProfile | null> {
+    async getReminderSettings(arg0: Principal): Promise<ReminderSettings | null> {
         if (this.processError) {
             try {
-                const result = await this.actor.getUserProfile(arg0);
+                const result = await this.actor.getReminderSettings(arg0);
                 return from_candid_opt_n3(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.getUserProfile(arg0);
+            const result = await this.actor.getReminderSettings(arg0);
             return from_candid_opt_n3(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getUserProfile(arg0: Principal): Promise<UserProfile | null> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getUserProfile(arg0);
+                return from_candid_opt_n7(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getUserProfile(arg0);
+            return from_candid_opt_n7(this._uploadFile, this._downloadFile, result);
         }
     }
     async isCallerAdmin(): Promise<boolean> {
@@ -219,14 +254,28 @@ export class Backend implements backendInterface {
     async logApplicationEntry(arg0: string, arg1: string, arg2: string | null): Promise<void> {
         if (this.processError) {
             try {
-                const result = await this.actor.logApplicationEntry(arg0, arg1, to_candid_opt_n10(this._uploadFile, this._downloadFile, arg2));
+                const result = await this.actor.logApplicationEntry(arg0, arg1, to_candid_opt_n13(this._uploadFile, this._downloadFile, arg2));
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.logApplicationEntry(arg0, arg1, to_candid_opt_n10(this._uploadFile, this._downloadFile, arg2));
+            const result = await this.actor.logApplicationEntry(arg0, arg1, to_candid_opt_n13(this._uploadFile, this._downloadFile, arg2));
+            return result;
+        }
+    }
+    async saveCallerReminderSettings(arg0: ReminderSettings): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.saveCallerReminderSettings(to_candid_ReminderSettings_n14(this._uploadFile, this._downloadFile, arg0));
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.saveCallerReminderSettings(to_candid_ReminderSettings_n14(this._uploadFile, this._downloadFile, arg0));
             return result;
         }
     }
@@ -244,20 +293,40 @@ export class Backend implements backendInterface {
             return result;
         }
     }
+    async updateReminderSettings(arg0: Principal, arg1: ReminderSettings): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.updateReminderSettings(arg0, to_candid_ReminderSettings_n14(this._uploadFile, this._downloadFile, arg1));
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.updateReminderSettings(arg0, to_candid_ReminderSettings_n14(this._uploadFile, this._downloadFile, arg1));
+            return result;
+        }
+    }
 }
-function from_candid_ApplicationLogEntry_n7(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ApplicationLogEntry): ApplicationLogEntry {
-    return from_candid_record_n8(_uploadFile, _downloadFile, value);
+function from_candid_ApplicationLogEntry_n11(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ApplicationLogEntry): ApplicationLogEntry {
+    return from_candid_record_n12(_uploadFile, _downloadFile, value);
 }
-function from_candid_UserRole_n4(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _UserRole): UserRole {
-    return from_candid_variant_n5(_uploadFile, _downloadFile, value);
+function from_candid_ReminderSettings_n4(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ReminderSettings): ReminderSettings {
+    return from_candid_record_n5(_uploadFile, _downloadFile, value);
 }
-function from_candid_opt_n3(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_UserProfile]): UserProfile | null {
+function from_candid_UserRole_n8(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _UserRole): UserRole {
+    return from_candid_variant_n9(_uploadFile, _downloadFile, value);
+}
+function from_candid_opt_n3(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_ReminderSettings]): ReminderSettings | null {
+    return value.length === 0 ? null : from_candid_ReminderSettings_n4(_uploadFile, _downloadFile, value[0]);
+}
+function from_candid_opt_n6(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [string]): string | null {
     return value.length === 0 ? null : value[0];
 }
-function from_candid_opt_n9(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [string]): string | null {
+function from_candid_opt_n7(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_UserProfile]): UserProfile | null {
     return value.length === 0 ? null : value[0];
 }
-function from_candid_record_n8(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_record_n12(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     role: string;
     company: string;
     notes: [] | [string];
@@ -271,11 +340,20 @@ function from_candid_record_n8(_uploadFile: (file: ExternalBlob) => Promise<Uint
     return {
         role: value.role,
         company: value.company,
-        notes: record_opt_to_undefined(from_candid_opt_n9(_uploadFile, _downloadFile, value.notes)),
+        notes: record_opt_to_undefined(from_candid_opt_n6(_uploadFile, _downloadFile, value.notes)),
         timestamp: value.timestamp
     };
 }
-function from_candid_variant_n5(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_record_n5(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    dailyReminderTime: [] | [string];
+}): {
+    dailyReminderTime?: string;
+} {
+    return {
+        dailyReminderTime: record_opt_to_undefined(from_candid_opt_n6(_uploadFile, _downloadFile, value.dailyReminderTime))
+    };
+}
+function from_candid_variant_n9(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     admin: null;
 } | {
     user: null;
@@ -284,14 +362,26 @@ function from_candid_variant_n5(_uploadFile: (file: ExternalBlob) => Promise<Uin
 }): UserRole {
     return "admin" in value ? UserRole.admin : "user" in value ? UserRole.user : "guest" in value ? UserRole.guest : value;
 }
-function from_candid_vec_n6(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_ApplicationLogEntry>): Array<ApplicationLogEntry> {
-    return value.map((x)=>from_candid_ApplicationLogEntry_n7(_uploadFile, _downloadFile, x));
+function from_candid_vec_n10(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_ApplicationLogEntry>): Array<ApplicationLogEntry> {
+    return value.map((x)=>from_candid_ApplicationLogEntry_n11(_uploadFile, _downloadFile, x));
+}
+function to_candid_ReminderSettings_n14(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ReminderSettings): _ReminderSettings {
+    return to_candid_record_n15(_uploadFile, _downloadFile, value);
 }
 function to_candid_UserRole_n1(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: UserRole): _UserRole {
     return to_candid_variant_n2(_uploadFile, _downloadFile, value);
 }
-function to_candid_opt_n10(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: string | null): [] | [string] {
+function to_candid_opt_n13(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: string | null): [] | [string] {
     return value === null ? candid_none() : candid_some(value);
+}
+function to_candid_record_n15(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    dailyReminderTime?: string;
+}): {
+    dailyReminderTime: [] | [string];
+} {
+    return {
+        dailyReminderTime: value.dailyReminderTime ? candid_some(value.dailyReminderTime) : candid_none()
+    };
 }
 function to_candid_variant_n2(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: UserRole): {
     admin: null;

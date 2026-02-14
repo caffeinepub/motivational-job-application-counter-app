@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useActor } from './useActor';
-import type { UserProfile, ApplicationLogEntry } from '../backend';
+import type { UserProfile, ApplicationLogEntry, ReminderSettings } from '../backend';
 
 // User Profile Queries
 export function useGetCallerUserProfile() {
@@ -67,3 +67,31 @@ export function useLogApplicationEntry() {
   });
 }
 
+// Reminder Settings Queries
+export function useGetCallerReminderSettings() {
+  const { actor, isFetching } = useActor();
+
+  return useQuery<ReminderSettings | null>({
+    queryKey: ['reminderSettings'],
+    queryFn: async () => {
+      if (!actor) return null;
+      return actor.getCallerReminderSettings();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+export function useSaveCallerReminderSettings() {
+  const { actor } = useActor();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (settings: ReminderSettings) => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.saveCallerReminderSettings(settings);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['reminderSettings'] });
+    },
+  });
+}

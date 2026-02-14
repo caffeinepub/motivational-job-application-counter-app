@@ -87,16 +87,57 @@ export default {
                 'scale-in': {
                     from: { transform: 'scale(0.95)', opacity: '0' },
                     to: { transform: 'scale(1)', opacity: '1' }
+                },
+                'flame-flicker': {
+                    '0%, 100%': { 
+                        transform: 'scale(1) translateY(0)',
+                        opacity: '1'
+                    },
+                    '25%': { 
+                        transform: 'scale(1.05) translateY(-2px)',
+                        opacity: '0.95'
+                    },
+                    '50%': { 
+                        transform: 'scale(0.98) translateY(1px)',
+                        opacity: '0.9'
+                    },
+                    '75%': { 
+                        transform: 'scale(1.03) translateY(-1px)',
+                        opacity: '0.93'
+                    }
+                },
+                'flame-burst': {
+                    '0%': { 
+                        transform: 'scale(1)',
+                        opacity: '1'
+                    },
+                    '25%': { 
+                        transform: 'scale(1.3) rotate(5deg)',
+                        opacity: '1'
+                    },
+                    '50%': { 
+                        transform: 'scale(1.5) rotate(-5deg)',
+                        opacity: '0.95'
+                    },
+                    '75%': { 
+                        transform: 'scale(1.2) rotate(3deg)',
+                        opacity: '0.9'
+                    },
+                    '100%': { 
+                        transform: 'scale(1)',
+                        opacity: '1'
+                    }
                 }
             },
             animation: {
                 'accordion-down': 'accordion-down 0.2s ease-out',
                 'accordion-up': 'accordion-up 0.2s ease-out',
                 'fade-in': 'fade-in 0.3s ease-out',
-                'scale-in': 'scale-in 0.2s ease-out'
+                'scale-in': 'scale-in 0.2s ease-out',
+                'flame-flicker': 'flame-flicker 2s ease-in-out infinite',
+                'flame-burst': 'flame-burst 0.6s ease-out'
             }
         }
     },
     plugins: [typography, containerQueries, animate]
 };
-

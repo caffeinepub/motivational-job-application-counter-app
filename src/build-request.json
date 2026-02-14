@@ -1,132 +1,114 @@
 {
   "kind": "build_request",
-  "title": "Motivational job application counter app",
+  "title": "Add reminder scheduling and a motivational “keep the fire on” animation",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-1",
-      "text": "Create a simple home screen that shows the user’s total number of job applications and provides a primary action to increment the count by 1 each time the user applies.",
+      "id": "REQ-7",
+      "text": "Add a Reminder Settings UI that lets an authenticated user enable/disable reminders and configure a simple schedule (at minimum: frequency = daily, time of day). The UI must be accessible from the main authenticated experience (e.g., Home screen or App header) and use English user-facing text.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-2"
+          "msg-1"
         ],
         "quotes": [
-          "I want an app to track and increase the counter for each time i apply to keep me motivated."
+          "i also want to set reminder notifications"
         ]
       },
       "acceptanceCriteria": [
-        "Home screen displays a clearly labeled total applications counter.",
-        "A single primary button (e.g., “I applied today” / “Log application”) increments the counter by exactly 1.",
-        "Increment action provides immediate visual feedback (counter updates without page reload)."
+        "When signed in, the user can open a Reminder Settings UI and toggle reminders on/off.",
+        "The user can select a time of day for the reminder and save it.",
+        "All UI labels, helper text, and button text are in English.",
+        "The settings UI works on mobile screen sizes without layout breakage."
       ]
     },
     {
-      "id": "REQ-2",
-      "text": "Allow the user to log a lightweight entry for each application (at minimum: date/time; optional fields: company, role, notes) and view recent entries in a list.",
-      "target": "both",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "I want an app to track and increase the counter for each time i apply"
-        ]
-      },
-      "acceptanceCriteria": [
-        "User can add an application log entry when incrementing or via an “Add entry” flow.",
-        "Recent entries list shows newest-first and includes at least the timestamp.",
-        "Total counter equals the number of stored entries (or is kept consistent if stored separately).",
-        "User can delete an entry and the total updates accordingly."
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "text": "Persist the user’s counter and application log entries in the Motoko backend keyed by the signed-in Internet Identity principal so progress is retained across sessions.",
+      "id": "REQ-8",
+      "text": "Persist reminder settings per signed-in user in the Motoko backend and expose methods to read and update them. Access control must match existing profile/entry methods (only the caller can read/update their own settings unless admin).",
       "target": "backend",
       "source": {
         "messageIds": [
-          "msg-2"
+          "msg-1"
         ],
         "quotes": [
-          "I want an app to track and increase the counter for each time i apply to keep me motivated."
+          "i also want to set reminder notifications"
         ]
       },
       "acceptanceCriteria": [
-        "After refresh/reopen, previously saved counter and entries load correctly for the same signed-in user.",
-        "Different principals see different stored data.",
-        "Backend exposes query/update methods needed to: fetch stats + entries, add entry, delete entry (and/or recompute stats)."
+        "Backend exposes a query method to fetch the caller’s reminder settings and an update method to save them.",
+        "Unauthorized callers cannot read or update another user’s reminder settings.",
+        "Reminder settings are stored per Principal similarly to existing userProfiles/appLogs patterns."
       ]
     },
     {
-      "id": "REQ-4",
-      "text": "Add lightweight motivation UI elements: show a short encouraging message that changes based on the current count (e.g., 0, 1–4, 5–9, 10+), and a simple milestone indicator (e.g., “Next milestone: 10”).",
+      "id": "REQ-9",
+      "text": "Implement reminder delivery in the frontend as an in-app reminder system with optional browser Notification API support when permissions are granted. The app must gracefully fall back to an in-app banner/dialog when notifications are not supported or permission is denied, and must not rely on push notifications.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-2"
+          "msg-1"
         ],
         "quotes": [
-          "to keep me motivated"
+          "set reminder notifications"
         ]
       },
       "acceptanceCriteria": [
-        "Encouraging message text changes when crossing defined count ranges.",
-        "UI shows the next milestone target number based on the current count.",
-        "All user-facing text is in English."
+        "If reminders are enabled, the app schedules a reminder prompt based on the saved time-of-day while the app is open.",
+        "If the user grants notification permission, the reminder can be shown via the browser Notification API while the app is open; otherwise, an in-app reminder UI is shown.",
+        "If notification permission is denied or unsupported, the app does not error and still shows an in-app reminder UI.",
+        "A clear control exists to disable reminders from the Reminder Settings UI."
       ]
     },
     {
-      "id": "REQ-5",
-      "text": "Implement a coherent visual theme for the app (colors, typography, spacing, and component styling) with a calm, supportive look and consistent layout across screens. Do not use a blue/purple-dominant palette.",
+      "id": "REQ-10",
+      "text": "Add a motivational “keep the fire on” animation to the Home screen that visually conveys ongoing momentum (e.g., a flame/flicker badge near the main count). The animation must be smooth, lightweight, and consistent with the existing warm theme (no blue/purple-dominant styling).",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-2"
+          "msg-1"
         ],
         "quotes": [
-          "i get depressed easily after a few days of trying."
+          "a good animation to keep the fire on"
         ]
       },
       "acceptanceCriteria": [
-        "App uses a consistent, calm visual style across the home counter view and entries list.",
-        "Primary action is visually prominent and accessible (clear contrast, readable type).",
-        "Theme avoids a blue/purple-dominant palette."
+        "Home screen displays a flame/momentum visual element that animates (e.g., flicker/pulse) without impacting page usability.",
+        "Animation remains performant on mobile (no excessive CPU usage, no layout thrash).",
+        "The animation styling matches the existing warm palette defined in the app theme.",
+        "The animated element does not block core actions (logging an application, viewing recent entries)."
       ]
     },
     {
-      "id": "REQ-6",
-      "text": "Add the required generated image asset(s) to the frontend as static files and display the main illustration on the home screen (e.g., header/hero area).",
+      "id": "REQ-11",
+      "text": "Trigger a short celebratory animation state when a new application entry is successfully logged (e.g., brief intensification of the flame/flicker or a subtle burst), using the existing ApplicationEntryForm onSuccess hook to coordinate UI feedback.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-2"
+          "msg-1"
         ],
         "quotes": [
-          "I want an app to track and increase the counter ... to keep me motivated."
+          "a good animation to keep the fire on"
         ]
       },
       "acceptanceCriteria": [
-        "Generated image files are placed under frontend/public/assets/generated.",
-        "Home screen renders the illustration without fetching it from the backend.",
-        "Image scales responsively and does not break layout on small screens."
+        "After successfully logging an application, the Home screen shows a brief, noticeable animation effect indicating progress.",
+        "The effect does not trigger on validation failures or canceled submissions.",
+        "The effect works even if the user logs multiple entries in a row (no stuck animation state)."
       ]
     }
   ],
   "constraints": [
-    "Backend must remain a single Motoko actor (all logic in backend/main.mo).",
-    "Do not edit files in frontend immutablePaths (compose existing UI components instead).",
-    "Use English for any user-facing text."
+    "Do not modify files under frontend/immutablePaths (e.g., frontend/src/hooks/useInternetIdentity.ts(x), frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui).",
+    "Do not implement push notifications or any third-party notification service; reminders must work as in-app prompts with optional browser Notification API usage only while the app is open.",
+    "Backend must remain a single Motoko actor (all logic in backend/main.mo); add migration.mo only if a state upgrade is required."
   ],
   "nonGoals": [
-    "No integrations with external job boards (LinkedIn/Indeed) or scraping.",
-    "No push notifications, email reminders, or SMS.",
-    "No real-time chat or social features."
+    "Implementing true background/scheduled push notifications when the browser/app is closed.",
+    "Integrating external calendar services (Google Calendar, iCal) or SMS/email reminders.",
+    "Adding third-party animation libraries or Lottie-based pipelines unless already present in the project."
   ],
   "imageRequirements": {
-    "required": [
-      "Warm minimal illustration of a person at a desk with a checklist and subtle hopeful elements (job-hunt-hero.dim_1600x900.png)"
-    ],
+    "required": [],
     "edits": []
   },
   "userProfileUpdate": {

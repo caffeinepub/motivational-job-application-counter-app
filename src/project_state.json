@@ -1,11 +1,10 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 3,
+  "projectStateVersion": 5,
   "summary": "Build a motivational job-hunt tracking app that lets the user log each job application and increment a counter to stay motivated.",
   "architectural_notes": [],
   "known_issues": [],
   "isFixRequest": false,
-  "imageRequirements": "## Required Images\n- Warm minimal illustration of a person at a desk with a checklist and subtle hopeful elements (job-hunt-hero.dim_1600x900.png)",
   "existing_features": [
     {
       "id": "feature-create-a-simple-home-screen-that-shows-the-user-s-total-number-of-job-applications-and-provides-a-primary-action-to-increment-the-count-by-1-each-time-the-user-applies",
@@ -46,6 +45,38 @@
         "REQ-6"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-add-a-reminder-settings-ui-that-lets-an-authenticated-user-enable-disable-reminders-and-configure-a-simple-schedule-at-minimum-frequency-daily-time-of-day-the-ui-must-be-accessible-from-the-main-authenticated-experience-e-g-home-screen-or-app-header-and-use-english-user-facing-text",
+      "title": "Add a Reminder Settings UI that lets an authenticated user enable/disable reminders and configure a simple schedule (at minimum: frequency = daily, time of day). The UI must be accessible from the main authenticated experience (e.g., Home screen or App header) and use English user-facing text.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-reminder-delivery-in-the-frontend-as-an-in-app-reminder-system-with-optional-browser-notification-api-support-when-permissions-are-granted-the-app-must-gracefully-fall-back-to-an-in-app-banner-dialog-when-notifications-are-not-supported-or-permission-is-denied-and-must-not-rely-on-push-notifications",
+      "title": "Implement reminder delivery in the frontend as an in-app reminder system with optional browser Notification API support when permissions are granted. The app must gracefully fall back to an in-app banner/dialog when notifications are not supported or permission is denied, and must not rely on push notifications.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-motivational-keep-the-fire-on-animation-to-the-home-screen-that-visually-conveys-ongoing-momentum-e-g-a-flame-flicker-badge-near-the-main-count-the-animation-must-be-smooth-lightweight-and-consistent-with-the-existing-warm-theme-no-blue-purple-dominant-styling",
+      "title": "Add a motivational “keep the fire on” animation to the Home screen that visually conveys ongoing momentum (e.g., a flame/flicker badge near the main count). The animation must be smooth, lightweight, and consistent with the existing warm theme (no blue/purple-dominant styling).",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-trigger-a-short-celebratory-animation-state-when-a-new-application-entry-is-successfully-logged-e-g-brief-intensification-of-the-flame-flicker-or-a-subtle-burst-using-the-existing-applicationentryform-onsuccess-hook-to-coordinate-ui-feedback",
+      "title": "Trigger a short celebratory animation state when a new application entry is successfully logged (e.g., brief intensification of the flame/flicker or a subtle burst), using the existing ApplicationEntryForm onSuccess hook to coordinate UI feedback.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -60,6 +91,26 @@
       "summary": "Persist the user’s counter and application log entries in the Motoko backend keyed by the signed-in Internet Identity principal so progress is retained across sessions.",
       "reqIds": [
         "REQ-3"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Add reminder notifications so the user gets prompted to apply/log applications on a schedule",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Add a motivational animation (e.g., “fire”/streak effect) to keep the experience engaging",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Persist reminder settings per signed-in user in the Motoko backend and expose methods to read and update them. Access control must match existing profile/entry methods (only the caller can read/update their own settings unless admin).",
+      "reqIds": [
+        "REQ-8"
       ],
       "status": "pending"
     }

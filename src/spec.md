@@ -1,14 +1,13 @@
 # Specification
 
 ## Summary
-**Goal:** Provide a calm, motivating app to track job applications with a simple counter and per-application log that persists per signed-in Internet Identity user.
+**Goal:** Let signed-in users configure and receive in-app reminders, and add a lightweight “keep the fire on” motivational animation on the Home screen with a brief celebratory state after logging an application.
 
 **Planned changes:**
-- Build a home screen showing the total applications count and a single primary button to increment by 1 with instant UI update.
-- Add lightweight application logging (timestamp required; optional company, role, notes) and show a newest-first recent entries list with delete support.
-- Persist entries (and derived total) in a single Motoko backend actor keyed by the signed-in principal; expose methods to fetch, add, and delete entries.
-- Add motivation UI: encouraging message that changes by count ranges and a “next milestone” indicator.
-- Apply a coherent calm visual theme with consistent layout across views, avoiding a blue/purple-dominant palette.
-- Add a generated hero illustration as a static frontend asset and display it responsively on the home screen.
+- Add a Reminder Settings UI (reachable from the main authenticated experience) to enable/disable reminders and set a simple schedule (daily + time of day), with English-only user-facing text and mobile-friendly layout.
+- Persist reminder settings per signed-in user in the Motoko backend, with read/update methods and access control matching existing per-user data patterns.
+- Implement reminder delivery while the app is open: schedule prompts based on saved time-of-day; optionally use the browser Notification API when permission is granted; otherwise fall back to an in-app banner/dialog without errors.
+- Add a warm-theme, smooth, lightweight flame/flicker “keep the fire on” animation on the Home screen that does not block core actions and remains performant on mobile.
+- Trigger a short celebratory animation state after a successful application log (wired to the existing ApplicationEntryForm onSuccess hook), including repeated submissions without stuck animation state.
 
-**User-visible outcome:** Users can sign in, see their total job applications, log a new application with optional details, view and delete recent entries, and get encouraging messages and milestone progress that persist across sessions.
+**User-visible outcome:** Signed-in users can turn reminders on/off, pick a daily reminder time, and receive reminder prompts in-app (or as browser notifications when allowed) while the app is open; the Home screen shows an animated flame indicator and briefly celebrates each successfully logged application.

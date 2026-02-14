@@ -16,6 +16,7 @@ export interface ApplicationLogEntry {
   'notes' : [] | [string],
   'timestamp' : Time,
 }
+export interface ReminderSettings { 'dailyReminderTime' : [] | [string] }
 export type Time = bigint;
 export interface UserProfile { 'name' : string }
 export type UserRole = { 'admin' : null } |
@@ -24,16 +25,23 @@ export type UserRole = { 'admin' : null } |
 export interface _SERVICE {
   '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
   'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
+  'getCallerReminderSettings' : ActorMethod<[], [] | [ReminderSettings]>,
   'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
   'getCallerUserRole' : ActorMethod<[], UserRole>,
   'getRecentApplicationEntries' : ActorMethod<[], Array<ApplicationLogEntry>>,
+  'getReminderSettings' : ActorMethod<[Principal], [] | [ReminderSettings]>,
   'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
   'isCallerAdmin' : ActorMethod<[], boolean>,
   'logApplicationEntry' : ActorMethod<
     [string, string, [] | [string]],
     undefined
   >,
+  'saveCallerReminderSettings' : ActorMethod<[ReminderSettings], undefined>,
   'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
+  'updateReminderSettings' : ActorMethod<
+    [Principal, ReminderSettings],
+    undefined
+  >,
 }
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];

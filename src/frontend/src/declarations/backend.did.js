@@ -13,6 +13,9 @@ export const UserRole = IDL.Variant({
   'user' : IDL.Null,
   'guest' : IDL.Null,
 });
+export const ReminderSettings = IDL.Record({
+  'dailyReminderTime' : IDL.Opt(IDL.Text),
+});
 export const UserProfile = IDL.Record({ 'name' : IDL.Text });
 export const Time = IDL.Int;
 export const ApplicationLogEntry = IDL.Record({
@@ -25,11 +28,21 @@ export const ApplicationLogEntry = IDL.Record({
 export const idlService = IDL.Service({
   '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
   'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+  'getCallerReminderSettings' : IDL.Func(
+      [],
+      [IDL.Opt(ReminderSettings)],
+      ['query'],
+    ),
   'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
   'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
   'getRecentApplicationEntries' : IDL.Func(
       [],
       [IDL.Vec(ApplicationLogEntry)],
+      ['query'],
+    ),
+  'getReminderSettings' : IDL.Func(
+      [IDL.Principal],
+      [IDL.Opt(ReminderSettings)],
       ['query'],
     ),
   'getUserProfile' : IDL.Func(
@@ -43,7 +56,13 @@ export const idlService = IDL.Service({
       [],
       [],
     ),
+  'saveCallerReminderSettings' : IDL.Func([ReminderSettings], [], []),
   'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+  'updateReminderSettings' : IDL.Func(
+      [IDL.Principal, ReminderSettings],
+      [],
+      [],
+    ),
 });
 
 export const idlInitArgs = [];
@@ -53,6 +72,9 @@ export const idlFactory = ({ IDL }) => {
     'admin' : IDL.Null,
     'user' : IDL.Null,
     'guest' : IDL.Null,
+  });
+  const ReminderSettings = IDL.Record({
+    'dailyReminderTime' : IDL.Opt(IDL.Text),
   });
   const UserProfile = IDL.Record({ 'name' : IDL.Text });
   const Time = IDL.Int;
@@ -66,11 +88,21 @@ export const idlFactory = ({ IDL }) => {
   return IDL.Service({
     '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
     'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+    'getCallerReminderSettings' : IDL.Func(
+        [],
+        [IDL.Opt(ReminderSettings)],
+        ['query'],
+      ),
     'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
     'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
     'getRecentApplicationEntries' : IDL.Func(
         [],
         [IDL.Vec(ApplicationLogEntry)],
+        ['query'],
+      ),
+    'getReminderSettings' : IDL.Func(
+        [IDL.Principal],
+        [IDL.Opt(ReminderSettings)],
         ['query'],
       ),
     'getUserProfile' : IDL.Func(
@@ -84,7 +116,13 @@ export const idlFactory = ({ IDL }) => {
         [],
         [],
       ),
+    'saveCallerReminderSettings' : IDL.Func([ReminderSettings], [], []),
     'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+    'updateReminderSettings' : IDL.Func(
+        [IDL.Principal, ReminderSettings],
+        [],
+        [],
+      ),
   });
 };
 

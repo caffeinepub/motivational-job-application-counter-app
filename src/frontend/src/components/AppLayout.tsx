@@ -1,6 +1,9 @@
 import { ReactNode } from 'react';
 import LoginButton from './LoginButton';
+import ReminderSettingsDialog from './ReminderSettingsDialog';
+import InAppReminderBanner from './InAppReminderBanner';
 import { useGetCallerUserProfile } from '../hooks/useQueries';
+import { useReminderScheduler } from '../hooks/useReminderScheduler';
 import { Heart } from 'lucide-react';
 
 interface AppLayoutProps {
@@ -9,6 +12,7 @@ interface AppLayoutProps {
 
 export default function AppLayout({ children }: AppLayoutProps) {
   const { data: userProfile } = useGetCallerUserProfile();
+  const { showReminder, dismissReminder } = useReminderScheduler();
   
   const appIdentifier = encodeURIComponent(
     typeof window !== 'undefined' ? window.location.hostname : 'job-hunt-tracker'
@@ -16,6 +20,8 @@ export default function AppLayout({ children }: AppLayoutProps) {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
+      {showReminder && <InAppReminderBanner onDismiss={dismissReminder} />}
+      
       <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-10">
         <div className="container max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -26,7 +32,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
               </span>
             )}
           </div>
-          <LoginButton />
+          <div className="flex items-center gap-2">
+            <ReminderSettingsDialog />
+            <LoginButton />
+          </div>
         </div>
       </header>
       
@@ -53,4 +62,3 @@ export default function AppLayout({ children }: AppLayoutProps) {
     </div>
   );
 }
-

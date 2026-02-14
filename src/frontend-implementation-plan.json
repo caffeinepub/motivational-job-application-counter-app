@@ -1,136 +1,112 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Motivational job application counter app (frontend)",
+  "title": "Reminder scheduling UI + in-app reminders + flame momentum animation",
   "requirements": [
     {
-      "id": "REQ-1",
-      "summary": "Home screen shows total applications and a single primary action that increments by 1 with immediate UI feedback.",
+      "id": "REQ-7",
+      "summary": "Add an authenticated Reminder Settings UI to enable/disable reminders and configure a daily time-of-day schedule.",
       "acceptanceCriteria": [
-        "Home screen displays a clearly labeled total applications counter.",
-        "A single primary button (e.g., “I applied today” / “Log application”) increments the counter by exactly 1.",
-        "Increment action provides immediate visual feedback (counter updates without page reload)."
+        "When signed in, the user can open a Reminder Settings UI and toggle reminders on/off.",
+        "The user can select a time of day for the reminder and save it.",
+        "All UI labels, helper text, and button text are in English.",
+        "The settings UI works on mobile screen sizes without layout breakage."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/screens/HomeScreen.tsx",
+          "path": "frontend/src/components/ReminderSettingsDialog.tsx",
           "operation": "create",
-          "description": "Implement the home screen UI that displays the total count (derived from stored entries) and a single primary action to log an application; update the UI immediately using React Query optimistic updates while persisting via the backend capability."
+          "description": "Create a Reminder Settings dialog UI (English text) with an enable/disable toggle and a time-of-day input (daily). Use shadcn-ui building blocks already used in the app (e.g., Dialog/Button/Input/Label) to match existing styling. Verify the component's usage instructions before implementing."
         },
         {
-          "path": "frontend/src/hooks/useApplicationEntries.ts",
-          "operation": "create",
-          "description": "Create React Query hooks to fetch recent application entries and to log a new entry; expose derived count and mutation state for immediate visual feedback on increment."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "create",
-          "description": "Wire the HomeScreen into the app shell and ensure it is the primary view users land on after authentication."
-        }
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "summary": "Provide a lightweight per-application logging flow (timestamp + optional company/role/notes), show newest-first recent entries, and allow deleting an entry with total updating.",
-      "acceptanceCriteria": [
-        "User can add an application log entry when incrementing or via an “Add entry” flow.",
-        "Recent entries list shows newest-first and includes at least the timestamp.",
-        "Total counter equals the number of stored entries (or is kept consistent if stored separately).",
-        "User can delete an entry and the total updates accordingly."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/ApplicationEntryForm.tsx",
-          "operation": "create",
-          "description": "Create a compact entry form (company, role, notes optional) that can be used inline on the HomeScreen or in an “Add entry” section; use shadcn-ui form primitives (e.g., Input/Textarea/Button/Card) to keep styling consistent. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/RecentEntriesList.tsx",
-          "operation": "create",
-          "description": "Render a newest-first list of recent entries showing at least the timestamp plus any provided fields; include a per-row delete control that calls the delete mutation and updates the list/count. Use shadcn-ui components for list rows/actions (e.g., Card/Button/AlertDialog). Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/hooks/useApplicationEntries.ts",
+          "path": "frontend/src/hooks/useQueries.ts",
           "operation": "modify",
-          "description": "Add mutations and cache update logic for: (1) log entry with current timestamp and optional fields; (2) delete entry with optimistic removal and count recalculation from the cached list; ensure list sorting is newest-first."
-        },
-        {
-          "path": "frontend/src/backend.d.ts",
-          "operation": "modify",
-          "description": "Align frontend type surface with the backend capabilities used by the UI for entries (fetch, add, and delete). If a delete capability exists in the backend canister but is missing from typings, add the missing method signature so the UI can call it safely."
-        },
-        {
-          "path": "frontend/src/screens/HomeScreen.tsx",
-          "operation": "modify",
-          "description": "Integrate ApplicationEntryForm and RecentEntriesList into the home screen; ensure the primary increment action can either (a) log immediately with minimal fields or (b) open/expand the lightweight entry form flow."
-        }
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "summary": "Add motivational UI: encouraging message based on count ranges and a next-milestone indicator.",
-      "acceptanceCriteria": [
-        "Encouraging message text changes when crossing defined count ranges.",
-        "UI shows the next milestone target number based on the current count.",
-        "All user-facing text is in English."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/utils/motivation.ts",
-          "operation": "create",
-          "description": "Implement pure helper functions to map application count to: (1) encouraging English message for ranges (0, 1–4, 5–9, 10+), and (2) next milestone target number (e.g., next multiple of 10 or a small set of milestones)."
-        },
-        {
-          "path": "frontend/src/screens/HomeScreen.tsx",
-          "operation": "modify",
-          "description": "Display the dynamic encouraging message and the next milestone indicator alongside the counter, updating automatically as the derived count changes."
-        }
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "summary": "Apply a calm, supportive, consistent visual theme across the home and entries UI, avoiding a blue/purple-dominant palette.",
-      "acceptanceCriteria": [
-        "App uses a consistent, calm visual style across the home counter view and entries list.",
-        "Primary action is visually prominent and accessible (clear contrast, readable type).",
-        "Theme avoids a blue/purple-dominant palette."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/index.css",
-          "operation": "create",
-          "description": "Define global Tailwind layers and set CSS variables used by the Tailwind theme to a calm, supportive palette (e.g., warm neutrals with green/orange accents) that is not blue/purple-dominant; establish consistent typography and spacing defaults."
+          "description": "Add React Query hooks for reminder settings (fetch caller settings and save caller settings) using the existing actor pattern, including cache invalidation on save."
         },
         {
           "path": "frontend/src/components/AppLayout.tsx",
-          "operation": "create",
-          "description": "Create a consistent layout wrapper (max width, padding, header area) used across screens/sections; ensure primary action styling is prominent and accessible using shadcn-ui Button variants where appropriate. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Wrap authenticated application content with AppLayout to ensure consistent spacing and styling across the home counter view and entries list."
+          "description": "Wire the Reminder Settings UI into the main authenticated experience by adding a header control (e.g., 'Reminders' button) that opens the ReminderSettingsDialog. Ensure header layout remains responsive on mobile. Verify the component's usage instructions before implementing."
         }
       ]
     },
     {
-      "id": "REQ-6",
-      "summary": "Add and display the generated hero illustration on the home screen as a responsive static asset.",
+      "id": "REQ-9",
+      "summary": "Implement in-app reminder delivery with optional browser Notification API support (no push), falling back gracefully to an in-app UI prompt.",
       "acceptanceCriteria": [
-        "Generated image files are placed under frontend/public/assets/generated.",
-        "Home screen renders the illustration without fetching it from the backend.",
-        "Image scales responsively and does not break layout on small screens."
+        "If reminders are enabled, the app schedules a reminder prompt based on the saved time-of-day while the app is open.",
+        "If the user grants notification permission, the reminder can be shown via the browser Notification API while the app is open; otherwise, an in-app reminder UI is shown.",
+        "If notification permission is denied or unsupported, the app does not error and still shows an in-app reminder UI.",
+        "A clear control exists to disable reminders from the Reminder Settings UI."
       ],
       "file_operations": [
         {
-          "path": "frontend/public/assets/generated/job-hunt-hero.dim_1600x900.png",
+          "path": "frontend/src/hooks/useReminderScheduler.ts",
           "operation": "create",
-          "description": "Add the generated static image asset at the exact required path: frontend/public/assets/generated/job-hunt-hero.dim_1600x900.png."
+          "description": "Create a hook that reads the saved reminder settings (via existing query hooks) and schedules the next reminder while the app is open using time-of-day logic; when it fires, attempt Notification API display if permitted, otherwise trigger an in-app reminder prompt state."
         },
         {
-          "path": "frontend/src/screens/HomeScreen.tsx",
+          "path": "frontend/src/components/InAppReminderBanner.tsx",
+          "operation": "create",
+          "description": "Create an in-app reminder prompt UI (banner/dialog) that can be shown when a reminder fires or when Notification API is unavailable/denied. Provide clear English copy and a dismiss action; ensure it is mobile-friendly. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/AppLayout.tsx",
           "operation": "modify",
-          "description": "Render the hero illustration from frontend/public/assets/generated/job-hunt-hero.dim_1600x900.png in a header/hero area with responsive sizing and safe aspect handling so it does not break layout on small screens."
+          "description": "Mount the reminder scheduler hook during the authenticated experience and render the InAppReminderBanner when the scheduler requests it, ensuring graceful fallback behavior when Notification API is unsupported/denied."
+        },
+        {
+          "path": "frontend/src/components/ReminderSettingsDialog.tsx",
+          "operation": "modify",
+          "description": "Add an explicit disable control that persists the disabled state (e.g., saving settings without a daily time) and ensure the scheduler stops when disabled. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "summary": "Add a smooth, lightweight warm-themed 'keep the fire on' flame/flicker animation on the Home screen near the main count.",
+      "acceptanceCriteria": [
+        "Home screen displays a flame/momentum visual element that animates (e.g., flicker/pulse) without impacting page usability.",
+        "Animation remains performant on mobile (no excessive CPU usage, no layout thrash).",
+        "The animation styling matches the existing warm palette defined in the app theme.",
+        "The animated element does not block core actions (logging an application, viewing recent entries)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/FlameMomentumBadge.tsx",
+          "operation": "create",
+          "description": "Create a small flame/momentum visual component (CSS-only animation) designed to sit near the HomeScreen count; use warm theme tokens (primary/accent/destructive) and avoid blue/purple-dominant styling."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Add lightweight keyframes/animation utilities for flame flicker/pulse (transform/opacity-based) and an optional brief intensify state to support celebratory feedback."
+        },
+        {
+          "path": "frontend/src/pages/HomeScreen.tsx",
+          "operation": "modify",
+          "description": "Render the FlameMomentumBadge near the main applications count in the hero overlay, ensuring it does not block interactions and remains responsive on mobile."
+        }
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "summary": "Trigger a short celebratory animation state on the Home screen after a successful application log using ApplicationEntryForm onSuccess.",
+      "acceptanceCriteria": [
+        "After successfully logging an application, the Home screen shows a brief, noticeable animation effect indicating progress.",
+        "The effect does not trigger on validation failures or canceled submissions.",
+        "The effect works even if the user logs multiple entries in a row (no stuck animation state)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/HomeScreen.tsx",
+          "operation": "modify",
+          "description": "Pass an onSuccess handler into ApplicationEntryForm to trigger a short-lived celebratory state; ensure rapid successive submissions restart the animation cleanly (no stuck state)."
+        },
+        {
+          "path": "frontend/src/components/FlameMomentumBadge.tsx",
+          "operation": "modify",
+          "description": "Add a prop-driven 'celebrate' or 'burst' state that briefly intensifies the flame animation (using the Tailwind keyframes) and then returns to the steady flicker."
         }
       ]
     }

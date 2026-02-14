@@ -1,16 +1,24 @@
+import { useState } from 'react';
 import { useGetRecentApplicationEntries } from '../hooks/useQueries';
 import ApplicationEntryForm from '../components/ApplicationEntryForm';
 import RecentEntriesList from '../components/RecentEntriesList';
+import FlameMomentumBadge from '../components/FlameMomentumBadge';
 import { getMotivationalMessage, getNextMilestone } from '../utils/motivation';
 import { Card, CardContent } from '@/components/ui/card';
 import { TrendingUp, Target } from 'lucide-react';
 
 export default function HomeScreen() {
   const { data: entries, isLoading } = useGetRecentApplicationEntries();
+  const [celebrating, setCelebrating] = useState(false);
   
   const totalCount = entries?.length || 0;
   const message = getMotivationalMessage(totalCount);
   const nextMilestone = getNextMilestone(totalCount);
+
+  const handleApplicationSuccess = () => {
+    setCelebrating(true);
+    setTimeout(() => setCelebrating(false), 2000);
+  };
 
   return (
     <div className="space-y-8 animate-fade-in">
@@ -23,9 +31,12 @@ export default function HomeScreen() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/60 to-transparent flex items-end">
           <div className="p-6 sm:p-8 w-full">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-2">
-              {totalCount}
-            </h2>
+            <div className="flex items-center gap-3 mb-2">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground">
+                {totalCount}
+              </h2>
+              <FlameMomentumBadge celebrate={celebrating} />
+            </div>
             <p className="text-lg sm:text-xl text-muted-foreground">
               {totalCount === 1 ? 'Application Submitted' : 'Applications Submitted'}
             </p>
@@ -65,11 +76,10 @@ export default function HomeScreen() {
       </div>
 
       {/* Application Entry Form */}
-      <ApplicationEntryForm />
+      <ApplicationEntryForm onSuccess={handleApplicationSuccess} />
 
       {/* Recent Entries List */}
       <RecentEntriesList />
     </div>
   );
 }
-
